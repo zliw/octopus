@@ -94,7 +94,8 @@
         }
       }
       
-      this.drawEye = function(x, y, radius, factor, rotation, direction) {
+      this.drawEye = function(x, y, ry, scale, rotation, direction) {
+        var rx = ry * scale;
         ctx.save();
         var gradient = ctx.createRadialGradient(0, y, 0, 0, 0, w / 3);
         gradient.addColorStop(0,  '#fff');
@@ -104,21 +105,26 @@
         ctx.fillStyle = gradient;
         ctx.globalAlpha = 0.55;
 
-        this.ellipse(x, y, radius * factor, radius, rotation, true);
+        this.ellipse(x, y, rx, ry, rotation, true);
 
         ctx.globalAlpha = 1 ;
+
         // eye lashes
         ctx.fillStyle = '#000';
-        ctx.beginPath();
 
-        var u = radius;
-        ctx.moveTo(x, y - u);
-        ctx.quadraticCurveTo(x - direction * radius / 20,
-                             y - u - radius / 5,
-                             x + direction * radius / 15,
-                             y - u - radius / 4);
-        ctx.stroke();
-
+        for (i=0 ; i < 3 ; i++) {
+          var ax = Math.sin((5 + rotation + 10 * i) / 180 * Math.PI); 
+          var ay = Math.cos((5 + rotation + 10 * i) / 180 * Math.PI); 
+          
+          ctx.beginPath();
+          ctx.moveTo(x + direction * ax * rx, y - ay * ry * 0.975);
+          ctx.quadraticCurveTo(x + direction * ax * 1.1 * ry,
+                               y - ay * 1.1 * ry,
+                               x + direction * ax * 1.2 * ry,
+                               y - ay * 1.2 * ry);
+          ctx.stroke();
+        }
+  
         ctx.restore();
       }
 
