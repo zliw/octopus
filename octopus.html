@@ -17,7 +17,30 @@
 </html>
 
 <script type="text/javascript">
+
     var Octopus = function(ctx, w, h) {
+      
+      this.phases = [
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2,
+                      Math.random() * Math.PI *2
+                     ];
+      this.speeds = [
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1,
+                      Math.random() + 1
+                      ];
+      
       this.ellipse = function(cx, cy, rx, ry, rotate, stroke) {
         ctx.save(); // save state
         ctx.beginPath();
@@ -32,7 +55,7 @@
         if (stroke) ctx.stroke();
       }
       
-      this.drawTentacles = function() {
+      this.drawTentacles = function(frame) {
         ctx.save()
         var i;
         var degrees = [-40, 40, 22, -23, 14, -13, 7, -8];
@@ -44,7 +67,7 @@
           var y = h / 7;
           var d = degrees[i];
           var p = w / 320 / (d * d);
-          var phase = Math.random() * Math.PI * 2;
+          var phase = this.phases[i] + this.speeds[i] * frame / 100 * Math.PI * 2;
 
           ctx.save()
 
@@ -160,12 +183,12 @@
 
       }
 
-      this.draw = function() {
+      this.draw = function(frame) {
         ctx.save()
         ctx.translate(w / 2, h / 2.5);
         ctx.lineWidth = w / 100;
 
-        this.drawTentacles();
+        this.drawTentacles(frame);
         this.drawHead();
         this.drawEyes();
 
@@ -180,6 +203,26 @@
   var h = canvas.height
 
   var o = new Octopus(ctx, w, h);
-  o.draw();
+
+  window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame    ||
+            function( callback ){
+              window.setTimeout(callback, 1000);
+            };
+  })();
+
+  var fps = 15;
+  var frame = 0;
+  (function animloop(){
+
+    setTimeout(function() {
+        requestAnimFrame(animloop);
+        ctx.clearRect(0, 0, w, h);
+        o.draw(frame++);
+    }, 1000 / fps);
+  })();
+  
   </script>
 
