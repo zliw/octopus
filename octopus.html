@@ -3,6 +3,9 @@
     <title>Octopus Demo</title>
   
     <style>
+    input[type="range"] {
+      width:20em;
+    }
     canvas {
       background:         radial-gradient(circle, #004 0%,  #000 100%);
     }
@@ -13,6 +16,10 @@
     <div style="border-style: solid; border-width: 2px; width: 320px;">
       <canvas width="320" height="450" id="drawing">canvas tag not supported</canvas>
     </div>
+    <table>
+    <tr><td>Happy</td><td><input id="moodSlider" type="range" min="0" value="50" max="100" step="5"></td><td>Sad</td></tr></div>
+    <tr><td>Slow</td><td><input  id="speedSlider" type="range" min="0" value="50" max="100" step="5"</td><td>Hectic</td></tr></div>
+    </table>
   </body>
 </html>
 
@@ -20,6 +27,8 @@
 
     var Octopus = function(ctx, w, h) {
       
+      this.sadness = 50;
+      this.speed = 50;
       this.phases = [
                       Math.random() * Math.PI *2,
                       Math.random() * Math.PI *2,
@@ -203,6 +212,18 @@
   var h = canvas.height
 
   var o = new Octopus(ctx, w, h);
+
+  var speedSlider = document.getElementById('speedSlider');
+  
+  speedSlider.addEventListener('input', function(event) {
+    o.speed = speedSlider.value;
+  });
+
+  var moodSlider = document.getElementById('moodSlider');
+  
+  moodSlider.addEventListener('input', function(event) {
+    o.mood = moodSlider.value;
+  });
 
   window.requestAnimFrame = (function(){
     return  window.requestAnimationFrame       ||
