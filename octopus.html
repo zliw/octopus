@@ -134,6 +134,7 @@
           var y = w / 12 * Math.cos(i / 3 * Math.PI);
           this.ellipse(x, y + -h / 8, w / 24, w / 16, i / 3 * Math.PI);
         }
+        this.drawBeak();
       }
       
       this.drawEye = function(x, y, ry, scale, rotation, direction) {
@@ -152,7 +153,7 @@
         gradient.addColorStop(1,  '#468');
 
         ctx.fillStyle = gradient;
-        ctx.globalAlpha = 0.55;
+        ctx.globalAlpha = 0.8 - this.mood/ 500;
 
         this.ellipse(x, y, rx, ry, 0, true);
 
@@ -235,6 +236,90 @@
         // left eye
         this.drawEye(-w / (9 + 2 * af), eyeHeight, w / (6 + af), 0.56, -4, -1);
 
+      }
+      
+      this.drawBeak = function(){
+        ctx.save();
+
+        var x = 0;
+        var y = h / 100;
+
+        this.ellipse(x,y, 20, 20);
+        ctx.globalAlpha = 0.85;
+
+        var gradient = ctx.createRadialGradient(x, y + h / 4, 0, 
+                                                x, y + h / 4, h / 4);
+        gradient.addColorStop(0   , '#800');
+        gradient.addColorStop(0.7 , '#c40');
+        gradient.addColorStop(1   , '#f80');
+
+        ctx.fillStyle = gradient;
+
+        var c1 = w / 40;
+        var dx = w / 20;
+
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.quadraticCurveTo(x + c1,
+                             y,
+                             x + dx,
+                             y + h / 40);
+                             
+        ctx.quadraticCurveTo(x + w / 15,
+                             y + h / 16,
+                             x,
+                             y + h / 8);
+
+        ctx.quadraticCurveTo(
+                             x - w / 15,
+                             y + h / 16,
+                             x - dx,
+                             y + h / 40
+                             );
+        ctx.quadraticCurveTo(
+                             x - c1,
+                             y, x, y
+                           );
+
+        ctx.fill();
+
+        ctx.beginPath();
+
+        ctx.fillStyle = "#800";
+        ctx.globalAlpha = 0.5;
+
+        ctx.moveTo(x, y);
+
+        ctx.quadraticCurveTo(x + c1,
+                             y,
+                             x + dx,
+                             y + h / 40);
+                             
+        ctx.quadraticCurveTo(x + w / 15,
+                             y + h / 16,
+                             x,
+                             y + h / 8);
+
+        ctx.quadraticCurveTo(
+                             x + w / 30,
+                             y + h / 16,
+                             x + dx / 8,
+                             y + h / 40
+                             );
+        ctx.quadraticCurveTo(
+                             x - c1,
+                             y, x, y
+                           );
+                           ctx.fill();
+
+
+        ctx.globalAlpha = 0.85;
+        ctx.fillStyle = "#fff";
+
+        //highlight
+        this.ellipse(x - dx / 4, y + h / 24, dx / 4.5, dx / 3, -15, false);
+
+        ctx.restore();
       }
 
       this.draw = function(frame) {
