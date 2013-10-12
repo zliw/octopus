@@ -98,7 +98,6 @@
       this.drawHead = function() {
         ctx.globalAlpha = 1;
 
-        // head
         var gradient = ctx.createRadialGradient(0, - h / 6, 0, 
                                                 0, - h / 6, w / 2.5);
         gradient.addColorStop(0, '#0ac');
@@ -205,14 +204,15 @@
       }
 
       this.draw = function(frame) {
+        var nod =  Math.sin(frame * this.speed / 50 / 50 * Math.PI) / 20;
         ctx.save()
         ctx.translate(w / 2, h / 2.5);
         ctx.lineWidth = w / 100;
 
         this.drawTentacles(frame);
         
-        ctx.rotate(this.mood / 500);
-        this.drawHead();
+        ctx.rotate(this.mood / 500 + nod);
+        this.drawHead(frame);
         this.drawEyes();
 
         ctx.restore()
