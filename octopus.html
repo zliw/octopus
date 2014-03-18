@@ -1,22 +1,42 @@
 <html>
   <head>
-    <title>Octopus Demo</title>
+    <title>Octopus</title>
   
     <style>
     input[type="range"] {
       width:20em;
     }
-    canvas {
-      background:         radial-gradient(circle, #004 0%,  #000 100%);
+    body {
+      font-family: sans-serif; 
+      background: radial-gradient(circle, #008 0%,  #004 100%);
+      height:100%;
+    }
+    td:first
+    {
+      text-align:right;
+    }
+    .wrapper {
+      margin:auto;
+      width: 320px;
+    }
+    .controls {
+      color:#4cc;
+      margin:auto;
+      padding:8px;
+      border-style:solid;
+      border-radius:8px;
+      background-color: #046;
+      border-color: #046;
+      box-shadow: 0px 0px 4px #000; 
     }
     </style>
   </head>
 
   <body>
-    <div style="border-style: solid; border-width: 2px; width: 320px;">
+    <div class="wrapper">
       <canvas width="320" height="450" id="drawing">canvas tag not supported</canvas>
     </div>
-    <table>
+    <table class="controls">
     <tr><td>Happy</td><td><input id="moodSlider" type="range" min="0" value="50" max="100" step="5"></td><td>Sad</td></tr></div>
     <tr><td>Slow</td><td><input  id="speedSlider" type="range" min="0" value="50" max="100" step="5"</td><td>Hectic</td></tr></div>
     <tr><td>Neutral</td><td><input  id="angrySlider" value="0" type="range" min="0" value="50" max="100" step="5"</td><td>Angry</td></tr></div>
@@ -325,7 +345,7 @@
       this.draw = function(frame) {
         var nod =  Math.sin(frame * this.speed / 50 / 50 * Math.PI) / 20;
         ctx.save()
-        ctx.translate(w / 2, h / 2.5);
+        ctx.translate(w / 2, h / 2);
         ctx.lineWidth = w / 100;
 
         this.drawTentacles(frame);
@@ -382,7 +402,7 @@
 
   var fps = 15;
   var frame = 0;
-  (function animloop(){
+  (function animloop() {
 
     setTimeout(function() {
         requestAnimFrame(animloop);
